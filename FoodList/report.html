@@ -1,0 +1,749 @@
+<!DOCTYPE html>
+<html lang="th">
+<head>
+  <meta charset="UTF-8">
+  <title>สรุปรายงาน - เต็มปากเต็มคำ</title>
+  <link rel="manifest" href="manifest.json">
+  <meta name="theme-color" content="#6f42c1">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  
+  <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css" rel="stylesheet">
+  <link href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.10.0/font/bootstrap-icons.css" rel="stylesheet">
+  <link href="https://fonts.googleapis.com/css2?family=Kanit:wght@300;400;600;700&display=swap" rel="stylesheet">
+  
+  <style>
+    :root {
+      --primary-purple: #6f42c1;
+      --dark-purple: #5c37a8;
+      --light-purple: #e6dffb;
+      --success-green: #198754;
+      --danger-red: #dc3545;
+      --black: #000000;
+      --dark-gray: #212529;
+      --light-gray: #f8f9fa;
+    }
+    
+    body {
+      font-family: 'Kanit', sans-serif;
+      background: linear-gradient(135deg, var(--light-purple) 0%, var(--light-gray) 100%);
+      min-height: 100vh;
+      color: var(--dark-gray);
+      font-weight: 300;
+    }
+    
+    .main-container {
+      background: white;
+      border-radius: 20px;
+      box-shadow: 0 10px 30px rgba(0,0,0,0.1);
+      margin: 20px auto;
+      overflow: hidden;
+    }
+    
+    .header-section {
+      background: linear-gradient(135deg, var(--primary-purple) 0%, var(--dark-purple) 100%);
+      color: white;
+      padding: 1.5rem 0;
+      text-align: center;
+      position: relative;
+      overflow: hidden;
+    }
+    
+    .header-section::before {
+      content: '';
+      position: absolute;
+      top: -50%;
+      left: -50%;
+      width: 200%;
+      height: 200%;
+      background: radial-gradient(circle, rgba(255,255,255,0.1) 0%, transparent 70%);
+      animation: shimmer 3s infinite;
+    }
+    
+    @keyframes shimmer {
+      0% { transform: rotate(0deg); }
+      100% { transform: rotate(360deg); }
+    }
+    
+    .logo-section {
+      position: relative;
+      z-index: 2;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      gap: 1rem;
+    }
+    
+    .logo-icon {
+      width: 200px;
+      height: 200px;
+      background: rgba(255,255,255,0.2);
+      border-radius: 15px;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      backdrop-filter: blur(10px);
+      overflow: hidden;
+    }
+    
+    .logo-icon img {
+      width: 100%;
+      height: 100%;
+      object-fit: cover;
+      border-radius: 12px;
+    }
+    
+    .logo-text h1 {
+      margin: 0;
+      font-size: 2rem;
+      font-weight: 600;
+      letter-spacing: -0.5px;
+    }
+    
+    .navigation {
+      background: var(--dark-purple);
+      padding: 1rem 0;
+    }
+    
+    .nav-link {
+      color: white;
+      font-weight: 500;
+      text-decoration: none;
+      padding: 0.5rem 1rem;
+      border-radius: 8px;
+      transition: all 0.3s ease;
+      margin: 0 0.25rem;
+    }
+    
+    .nav-link:hover {
+      background: rgba(255,255,255,0.1);
+      color: white;
+    }
+    
+    .nav-link.active {
+      background: rgba(255,255,255,0.2);
+      color: white;
+    }
+    
+    .form-section {
+      background: var(--light-gray);
+      padding: 2rem;
+    }
+    
+    .form-control, .form-select {
+      border-radius: 10px;
+      border: 2px solid #e9ecef;
+      padding: 0.75rem 1rem;
+      font-size: 1rem;
+      transition: border-color 0.3s ease, box-shadow 0.3s ease;
+    }
+    
+    .form-control:focus, .form-select:focus {
+      border-color: var(--primary-purple);
+      box-shadow: 0 0 0 0.2rem rgba(111, 66, 193, 0.25);
+    }
+    
+    .btn-primary {
+      background: linear-gradient(135deg, var(--primary-purple) 0%, var(--dark-purple) 100%);
+      border: none;
+      border-radius: 10px;
+      padding: 0.75rem 2rem;
+      font-weight: 500;
+      font-size: 1rem;
+      transition: all 0.3s ease;
+      letter-spacing: 0.3px;
+    }
+    
+    .btn-primary:hover {
+      transform: translateY(-2px);
+      box-shadow: 0 5px 15px rgba(111, 66, 193, 0.4);
+      background: linear-gradient(135deg, var(--dark-purple) 0%, #4a2e8c 100%);
+    }
+    
+    .expense-list { /* This style seems to be from expense.html, but let's keep for consistency if used elsewhere */
+      padding: 2rem;
+    }
+    
+    .expense-item { /* Same as above */
+      background: white;
+      border-radius: 12px;
+      padding: 1rem;
+      margin-bottom: 1rem;
+      border-left: 4px solid var(--primary-purple); /* Changed to purple for report context */
+      box-shadow: 0 2px 10px rgba(0,0,0,0.05);
+      transition: all 0.3s ease;
+    }
+    
+    .expense-item:hover { /* Same as above */
+      box-shadow: 0 5px 20px rgba(0,0,0,0.1);
+      transform: translateX(5px);
+    }
+    
+    .expense-date { /* Same as above */
+      font-size: 0.85rem;
+      color: #6c757d;
+      margin-bottom: 0.5rem;
+    }
+    
+    .expense-details { /* Same as above */
+      font-weight: 500;
+      color: var(--dark-gray);
+      letter-spacing: -0.2px;
+    }
+    
+    .expense-amount { /* Same as above */
+      font-size: 1.2rem;
+      font-weight: 600;
+      color: var(--primary-purple); /* Changed to purple for report context */
+      letter-spacing: -0.3px;
+    }
+    
+    .expense-category { /* Same as above */
+      background: var(--light-purple); /* Changed to purple for report context */
+      color: var(--primary-purple); /* Changed to purple for report context */
+      padding: 0.2rem 0.8rem;
+      border-radius: 20px;
+      font-size: 0.8rem;
+      font-weight: 500;
+      display: inline-block;
+      margin-top: 0.5rem;
+      letter-spacing: 0.2px;
+    }
+    
+    .section-title {
+      color: var(--dark-gray);
+      font-weight: 600;
+      margin-bottom: 1.5rem;
+      position: relative;
+      padding-bottom: 0.5rem;
+      font-size: 1.3rem;
+      letter-spacing: -0.3px;
+    }
+    
+    .section-title::after {
+      content: '';
+      position: absolute;
+      bottom: 0;
+      left: 0;
+      width: 50px;
+      height: 3px;
+      background: linear-gradient(135deg, var(--primary-purple) 0%, var(--dark-purple) 100%);
+      border-radius: 2px;
+    }
+    
+    .fade-in {
+      animation: fadeIn 0.5s ease-in;
+    }
+    
+    @keyframes fadeIn {
+      from { opacity: 0; transform: translateY(20px); }
+      to { opacity: 1; transform: translateY(0); }
+    }
+    
+    .empty-state {
+      text-align: center;
+      padding: 3rem;
+      color: #6c757d;
+    }
+    
+    .empty-state i {
+      font-size: 4rem;
+      margin-bottom: 1rem;
+      color: var(--primary-purple);
+    }
+    
+    .summary-card {
+      background: white;
+      border-radius: 15px;
+      padding: 1.5rem;
+      text-align: center;
+      box-shadow: 0 5px 15px rgba(0,0,0,0.1);
+      border-left: 4px solid; /* Defined by class for specific cards */
+      transition: transform 0.3s ease, box-shadow 0.3s ease;
+      margin: 1rem 0;
+    }
+    
+    .summary-card:hover {
+      transform: translateY(-5px);
+      box-shadow: 0 8px 25px rgba(0,0,0,0.15);
+    }
+    
+    /* Specific border colors for summary cards */
+    .summary-card.income-border {
+        border-left-color: var(--success-green);
+    }
+    .summary-card.expense-border {
+        border-left-color: var(--danger-red);
+    }
+    .summary-card.balance-border {
+        border-left-color: var(--primary-purple);
+    }
+
+    .summary-icon {
+      font-size: 2rem;
+      margin-bottom: 0.5rem;
+    }
+    
+    .summary-amount {
+      font-size: 1.8rem;
+      font-weight: 600;
+      margin: 0;
+      letter-spacing: -0.5px;
+    }
+    
+    .summary-label {
+      font-size: 0.9rem;
+      color: #6c757d;
+      margin: 0;
+      font-weight: 300;
+      letter-spacing: 0.3px;
+    }
+
+    /* Chart specific styles (for report.html) */
+    .chart-container {
+        position: relative;
+        height: 400px; /* Adjust as needed */
+        width: 100%;
+        margin-bottom: 2rem;
+    }
+    
+    @media (max-width: 768px) {
+      .main-container {
+        margin: 10px;
+        border-radius: 15px;
+      }
+      
+      .header-section {
+        padding: 1rem 0;
+      }
+      
+      .logo-section {
+        flex-direction: column;
+        gap: 0.5rem;
+      }
+      
+      .logo-text h1 {
+        font-size: 1.5rem;
+      }
+      
+      .form-section, .expense-list {
+        padding: 1.5rem;
+      }
+    }
+  </style>
+  <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+</head>
+<body>
+  <div class="container-fluid">
+    <div class="main-container">
+      
+      <div class="header-section">
+        <div class="logo-section">
+          <div class="logo-icon">
+            <img src="icon-192.png" alt="โลโก้เต็มปากเต็มคำ">
+          </div>
+          <div class="logo-text">
+            <h1></h1>
+          </div>
+        </div>
+      </div>
+      
+      <div class="navigation">
+        <div class="container">
+          <div class="d-flex justify-content-center flex-wrap">
+            <a href="income.html" class="nav-link">รายรับ</a>
+            <a href="expense.html" class="nav-link">รายจ่าย</a>
+            <a href="report.html" class="nav-link active">สรุปรายงาน</a>
+          </div>
+        </div>
+      </div>
+      
+      <div class="container-fluid mt-4">
+        <div class="row px-3">
+          <div class="col-md-4 mb-3">
+            <div class="summary-card income-border">
+              <div class="summary-icon text-success">
+                <i class="bi bi-currency-dollar"></i>
+              </div>
+              <p class="summary-amount text-success" id="totalIncome">0</p>
+              <p class="summary-label">รายรับทั้งหมด (บาท)</p>
+            </div>
+          </div>
+          <div class="col-md-4 mb-3">
+            <div class="summary-card expense-border">
+              <div class="summary-icon text-danger">
+                <i class="bi bi-cart-dash-fill"></i>
+              </div>
+              <p class="summary-amount text-danger" id="totalExpense">0</p>
+              <p class="summary-label">รายจ่ายทั้งหมด (บาท)</p>
+            </div>
+          </div>
+          <div class="col-md-4 mb-3">
+            <div class="summary-card balance-border">
+              <div class="summary-icon text-primary-purple">
+                <i class="bi bi-wallet2"></i>
+              </div>
+              <p class="summary-amount" id="balanceAmount" style="color: var(--primary-purple);">0</p>
+              <p class="summary-label">กำไร/ขาดทุน (บาท)</p>
+            </div>
+          </div>
+        </div>
+      </div>
+
+      <div class="form-section">
+        <h3 class="section-title">
+          <i class="bi bi-bar-chart-line-fill me-2"></i>
+          ตัวเลือกรายงาน
+        </h3>
+        <div class="row g-3 align-items-end">
+            <div class="col-md-4">
+                <label for="periodType" class="form-label" style="font-weight: 500;">ประเภทรายงาน</label>
+                <select class="form-select" id="periodType" onchange="updatePeriodSelector()">
+                    <option value="daily">รายวัน</option>
+                    <option value="monthly">รายเดือน</option>
+                </select>
+            </div>
+            <div class="col-md-4">
+                <label for="monthSelector" class="form-label" style="font-weight: 500;">เลือกเดือน</label>
+                <input type="month" class="form-control" id="monthSelector">
+            </div>
+            <div class="col-md-4 d-none" id="yearSelectorContainer">
+                <label for="yearSelector" class="form-label" style="font-weight: 500;">เลือกปี</label>
+                <input type="number" class="form-control" id="yearSelector" min="2000" max="2100">
+            </div>
+            <div class="col-12">
+                <button type="button" class="btn btn-primary w-100" onclick="updateReport()">
+                    <i class="bi bi-search me-2"></i>
+                    ดูรายงาน
+                </button>
+            </div>
+        </div>
+      </div>
+
+      <div class="form-section mt-4">
+        <h3 class="section-title">
+            <i class="bi bi-graph-up me-2"></i>
+            กราฟสรุปรายรับ-รายจ่าย
+        </h3>
+        <div class="chart-container">
+            <canvas id="myChart"></canvas>
+        </div>
+      </div>
+
+      <div class="expense-list">
+        <h3 class="section-title">
+          <i class="bi bi-file-earmark-bar-graph me-2"></i>
+          รายละเอียดรายงาน
+        </h3>
+        <div id="dailyReportList"></div>
+      </div>
+      
+    </div>
+  </div>
+
+  <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/js/bootstrap.bundle.min.js"></script>
+  
+  <script>
+    let incomeData = JSON.parse(localStorage.getItem("incomeData") || "[]");
+    let expenseData = JSON.parse(localStorage.getItem("expenseData") || "[]");
+    let myChartInstance; // Variable to hold the Chart.js instance
+
+    // Set default month and year for selectors
+    const today = new Date();
+    const currentMonth = today.toISOString().slice(0, 7); // YYYY-MM
+    document.getElementById('monthSelector').value = currentMonth;
+    document.getElementById('yearSelector').value = today.getFullYear();
+
+    // Register Service Worker
+    if ('serviceWorker' in navigator) {
+        window.addEventListener('load', () => {
+            navigator.serviceWorker.register('/sw.js').then(registration => {
+                console.log('Service Worker registered with scope:', registration.scope);
+            }).catch(error => {
+                console.error('Service Worker registration failed:', error);
+            });
+        });
+    }
+
+    document.addEventListener('DOMContentLoaded', () => {
+        updateSummaryCards();
+        updatePeriodSelector(); // Initialize selector visibility
+        updateReport(); // Initial report display
+    });
+
+    function updateSummaryCards() {
+        const totalIncome = incomeData.reduce((sum, item) => sum + item.amount, 0);
+        const totalExpense = expenseData.reduce((sum, item) => sum + item.amount, 0);
+        const balance = totalIncome - totalExpense;
+
+        document.getElementById('totalIncome').innerText = totalIncome.toLocaleString('th-TH');
+        document.getElementById('totalExpense').innerText = totalExpense.toLocaleString('th-TH');
+        
+        const balanceAmountEl = document.getElementById('balanceAmount');
+        balanceAmountEl.innerText = balance.toLocaleString('th-TH');
+
+        // Change color based on balance
+        if (balance > 0) {
+            balanceAmountEl.style.color = 'var(--primary-green)'; // Success green
+        } else if (balance < 0) {
+            balanceAmountEl.style.color = 'var(--primary-red)'; // Danger red
+        } else {
+            balanceAmountEl.style.color = 'var(--dark-gray)'; // Neutral black/dark gray
+        }
+    }
+
+    function updatePeriodSelector() {
+        const periodType = document.getElementById('periodType').value;
+        const monthSelector = document.getElementById('monthSelector');
+        const yearSelectorContainer = document.getElementById('yearSelectorContainer');
+
+        if (periodType === 'daily') {
+            monthSelector.parentNode.classList.remove('d-none');
+            yearSelectorContainer.classList.add('d-none');
+        } else { // monthly
+            monthSelector.parentNode.classList.add('d-none');
+            yearSelectorContainer.classList.remove('d-none');
+        }
+    }
+
+    function updateReport() {
+        const periodType = document.getElementById('periodType').value;
+        let filteredIncome = [];
+        let filteredExpense = [];
+
+        if (periodType === 'daily') {
+            const selectedMonth = document.getElementById('monthSelector').value; // YYYY-MM
+            if (!selectedMonth) {
+                alert("กรุณาเลือกเดือนที่ต้องการดูรายงาน");
+                return;
+            }
+            filteredIncome = incomeData.filter(item => item.date.startsWith(selectedMonth));
+            filteredExpense = expenseData.filter(item => item.date.startsWith(selectedMonth));
+        } else { // monthly
+            const selectedYear = document.getElementById('yearSelector').value; // YYYY
+            if (!selectedYear) {
+                alert("กรุณาเลือกปีที่ต้องการดูรายงาน");
+                return;
+            }
+            filteredIncome = incomeData.filter(item => item.date.startsWith(selectedYear));
+            filteredExpense = expenseData.filter(item => item.date.startsWith(selectedYear));
+        }
+
+        renderChart(periodType, filteredIncome, filteredExpense);
+        renderDailyReport(periodType, filteredIncome, filteredExpense);
+    }
+
+    function renderChart(periodType, income, expense) {
+        const ctx = document.getElementById('myChart').getContext('2d');
+
+        // Destroy previous chart instance if it exists
+        if (myChartInstance) {
+            myChartInstance.destroy();
+        }
+
+        let labels = [];
+        let incomeAmounts = [];
+        let expenseAmounts = [];
+
+        if (periodType === 'daily') {
+            // Group data by day (e.g., '2023-01-01' -> '01')
+            const dataByDay = {};
+            income.forEach(item => {
+                const day = item.date.substring(8, 10);
+                if (!dataByDay[day]) dataByDay[day] = { income: 0, expense: 0 };
+                dataByDay[day].income += item.amount;
+            });
+            expense.forEach(item => {
+                const day = item.date.substring(8, 10);
+                if (!dataByDay[day]) dataByDay[day] = { income: 0, expense: 0 };
+                dataByDay[day].expense += item.amount;
+            });
+
+            labels = Object.keys(dataByDay).sort();
+            labels.forEach(day => {
+                incomeAmounts.push(dataByDay[day].income);
+                expenseAmounts.push(dataByDay[day].expense);
+            });
+
+        } else { // monthly
+            // Group data by month (e.g., '2023-01-01' -> '2023-01')
+            const dataByMonth = {};
+            income.forEach(item => {
+                const month = item.date.substring(0, 7); // YYYY-MM
+                if (!dataByMonth[month]) dataByMonth[month] = { income: 0, expense: 0 };
+                dataByMonth[month].income += item.amount;
+            });
+            expense.forEach(item => {
+                const month = item.date.substring(0, 7); // YYYY-MM
+                if (!dataByMonth[month]) dataByMonth[month] = { income: 0, expense: 0 };
+                dataByMonth[month].expense += item.amount;
+            });
+
+            labels = Object.keys(dataByMonth).sort();
+            labels.forEach(month => {
+                incomeAmounts.push(dataByMonth[month].income);
+                expenseAmounts.push(dataByMonth[month].expense);
+            });
+        }
+
+        myChartInstance = new Chart(ctx, {
+            type: 'bar',
+            data: {
+                labels: labels,
+                datasets: [
+                    {
+                        label: 'รายรับ (บาท)',
+                        data: incomeAmounts,
+                        backgroundColor: 'var(--primary-green)',
+                        borderColor: 'var(--dark-green)',
+                        borderWidth: 1
+                    },
+                    {
+                        label: 'รายจ่าย (บาท)',
+                        data: expenseAmounts,
+                        backgroundColor: 'var(--primary-red)',
+                        borderColor: 'var(--dark-red)',
+                        borderWidth: 1
+                    }
+                ]
+            },
+            options: {
+                responsive: true,
+                maintainAspectRatio: false,
+                scales: {
+                    y: {
+                        beginAtZero: true,
+                        title: {
+                            display: true,
+                            text: 'จำนวนเงิน (บาท)'
+                        }
+                    },
+                    x: {
+                        title: {
+                            display: true,
+                            text: periodType === 'daily' ? 'วัน' : 'เดือน'
+                        }
+                    }
+                },
+                plugins: {
+                    tooltip: {
+                        callbacks: {
+                            label: function(context) {
+                                let label = context.dataset.label || '';
+                                if (label) {
+                                    label += ': ';
+                                }
+                                if (context.parsed.y !== null) {
+                                    label += context.parsed.y.toLocaleString('th-TH') + ' ฿';
+                                }
+                                return label;
+                            }
+                        }
+                    }
+                }
+            }
+        });
+    }
+
+    function renderDailyReport(periodType, income, expense) {
+        const dailyReportListEl = document.getElementById('dailyReportList');
+        dailyReportListEl.innerHTML = "";
+
+        const combinedData = {};
+
+        // Process income data
+        income.forEach(item => {
+            let key;
+            if (periodType === 'daily') {
+                key = item.date;
+            } else { // monthly
+                key = item.date.substring(0, 7); // YYYY-MM
+            }
+            if (!combinedData[key]) {
+                combinedData[key] = { income: 0, expense: 0, date: key };
+            }
+            combinedData[key].income += item.amount;
+        });
+
+        // Process expense data
+        expense.forEach(item => {
+            let key;
+            if (periodType === 'daily') {
+                key = item.date;
+            } else { // monthly
+                key = item.date.substring(0, 7); // YYYY-MM
+            }
+            if (!combinedData[key]) {
+                combinedData[key] = { income: 0, expense: 0, date: key };
+            }
+            combinedData[key].expense += item.amount;
+        });
+
+        const sortedKeys = Object.keys(combinedData).sort((a, b) => {
+            if (periodType === 'daily') {
+                return new Date(b) - new Date(a);
+            } else { // monthly
+                return new Date(b + '-01') - new Date(a + '-01'); // Add -01 to make it a valid date for comparison
+            }
+        });
+
+        if (sortedKeys.length === 0) {
+            dailyReportListEl.innerHTML = `
+                <div class="empty-state">
+                    <i class="bi bi-file-earmark-excel"></i>
+                    <h5>ไม่พบข้อมูลสำหรับช่วงเวลานี้</h5>
+                    <p>ลองเลือกช่วงเวลาอื่น หรือเพิ่มรายการรายรับ-รายจ่าย</p>
+                </div>
+            `;
+            return;
+        }
+
+        sortedKeys.forEach(key => {
+            const data = combinedData[key];
+            const balance = data.income - data.expense;
+            let balanceColor = 'var(--dark-gray)';
+            let balanceIcon = '';
+
+            if (balance > 0) {
+                balanceColor = 'var(--primary-green)';
+                balanceIcon = '<i class="bi bi-arrow-up-circle-fill me-1"></i>';
+            } else if (balance < 0) {
+                balanceColor = 'var(--primary-red)';
+                balanceIcon = '<i class="bi bi-arrow-down-circle-fill me-1"></i>';
+            } else {
+                balanceIcon = '<i class="bi bi-dash-circle-fill me-1"></i>';
+            }
+
+            let displayDate = key;
+            if (periodType === 'daily') {
+                displayDate = new Date(key).toLocaleDateString('th-TH', { day: 'numeric', month: 'long', year: 'numeric' });
+            } else { // monthly
+                const [year, month] = key.split('-');
+                const monthNames = ["มกราคม", "กุมภาพันธ์", "มีนาคม", "เมษายน", "พฤษภาคม", "มิถุนายน", "กรกฎาคม", "สิงหาคม", "กันยายน", "ตุลาคม", "พฤศจิกายน", "ธันวาคม"];
+                displayDate = `${monthNames[parseInt(month) - 1]} ${year}`;
+            }
+
+            const reportItem = document.createElement("div");
+            reportItem.className = "expense-item fade-in"; // Reusing expense-item style, consider renaming to report-item
+            reportItem.style.borderLeftColor = balanceColor; // Set border color dynamically
+            reportItem.innerHTML = `
+                <div class="d-flex justify-content-between align-items-center">
+                    <div>
+                        <div class="expense-date">${displayDate}</div>
+                        <div class="d-flex gap-3 mt-2">
+                            <span class="text-success" style="font-weight: 500;"><i class="bi bi-plus-circle me-1"></i> ${data.income.toLocaleString('th-TH')} ฿</span>
+                            <span class="text-danger" style="font-weight: 500;"><i class="bi bi-dash-circle me-1"></i> ${data.expense.toLocaleString('th-TH')} ฿</span>
+                        </div>
+                    </div>
+                    <div class="text-end">
+                        <div style="font-size: 1.2rem; font-weight: 600; color: ${balanceColor};">
+                            ${balanceIcon} ${balance.toLocaleString('th-TH')} ฿
+                        </div>
+                    </div>
+                </div>
+            `;
+            dailyReportListEl.appendChild(reportItem);
+        });
+    }
+  </script>
+</body>
+</html>
