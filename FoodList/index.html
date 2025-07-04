@@ -1,0 +1,581 @@
+<!DOCTYPE html>
+<html lang="th">
+<head>
+  <meta charset="UTF-8">
+  <title>รายรับ - เต็มปากเต็มคำ</title>
+  <link rel="manifest" href="manifest.json">
+  <meta name="theme-color" content="#198754">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  
+  <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css" rel="stylesheet">
+  <link href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.10.0/font/bootstrap-icons.css" rel="stylesheet">
+  <link href="https://fonts.googleapis.com/css2?family=Kanit:wght@300;400;600;700&display=swap" rel="stylesheet">
+  
+  <style>
+    :root {
+      --primary-green: #198754;
+      --dark-green: #146c43;
+      --light-green: #d1e7dd;
+      --success-green: #0f5132;
+      --danger-red: #dc3545; /* Added for navigation active state if needed */
+      --primary-purple: #6f42c1; /* Added for navigation active state */
+      --black: #000000;
+      --dark-gray: #212529;
+      --light-gray: #f8f9fa;
+    }
+    
+    body {
+      font-family: 'Kanit', sans-serif;
+      background: linear-gradient(135deg, var(--light-green) 0%, var(--light-gray) 100%);
+      min-height: 100vh;
+      color: var(--dark-gray);
+      font-weight: 300;
+    }
+    
+    .main-container {
+      background: white;
+      border-radius: 20px;
+      box-shadow: 0 10px 30px rgba(0,0,0,0.1);
+      margin: 20px auto;
+      overflow: hidden;
+    }
+    
+    .header-section {
+      background: linear-gradient(135deg, var(--primary-green) 0%, var(--dark-green) 100%);
+      color: white;
+      padding: 1.5rem 0;
+      text-align: center;
+      position: relative;
+      overflow: hidden;
+    }
+    
+    .header-section::before {
+      content: '';
+      position: absolute;
+      top: -50%;
+      left: -50%;
+      width: 200%;
+      height: 200%;
+      background: radial-gradient(circle, rgba(255,255,255,0.1) 0%, transparent 70%);
+      animation: shimmer 3s infinite;
+    }
+    
+    @keyframes shimmer {
+      0% { transform: rotate(0deg); }
+      100% { transform: rotate(360deg); }
+    }
+    
+    .logo-section {
+      position: relative;
+      z-index: 2;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      gap: 1rem;
+    }
+    
+    .logo-icon {
+      width: 200px;
+      height: 200px;
+      background: rgba(255,255,255,0.2);
+      border-radius: 15px;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      backdrop-filter: blur(10px);
+      overflow: hidden;
+    }
+    
+    .logo-icon img {
+      width: 100%;
+      height: 100%;
+      object-fit: cover;
+      border-radius: 12px;
+    }
+    
+    .logo-text h1 {
+      margin: 0;
+      font-size: 2rem;
+      font-weight: 600;
+      letter-spacing: -0.5px;
+    }
+    
+    .navigation {
+      background: var(--dark-green);
+      padding: 1rem 0;
+    }
+    
+    .nav-link {
+      color: white;
+      font-weight: 500;
+      text-decoration: none;
+      padding: 0.5rem 1rem;
+      border-radius: 8px;
+      transition: all 0.3s ease;
+      margin: 0 0.25rem;
+    }
+    
+    .nav-link:hover {
+      background: rgba(255,255,255,0.1);
+      color: white;
+    }
+    
+    .nav-link.active {
+      background: rgba(255,255,255,0.2);
+      color: white;
+    }
+    
+    .form-section {
+      background: var(--light-gray);
+      padding: 2rem;
+    }
+    
+    .form-control, .form-select {
+      border-radius: 10px;
+      border: 2px solid #e9ecef;
+      padding: 0.75rem 1rem;
+      font-size: 1rem;
+      transition: border-color 0.3s ease, box-shadow 0.3s ease;
+    }
+    
+    .form-control:focus, .form-select:focus {
+      border-color: var(--primary-green);
+      box-shadow: 0 0 0 0.2rem rgba(25, 135, 84, 0.25);
+    }
+    
+    .btn-primary {
+      background: linear-gradient(135deg, var(--primary-green) 0%, var(--dark-green) 100%);
+      border: none;
+      border-radius: 10px;
+      padding: 0.75rem 2rem;
+      font-weight: 500;
+      font-size: 1rem;
+      transition: all 0.3s ease;
+      letter-spacing: 0.3px;
+    }
+    
+    .btn-primary:hover {
+      transform: translateY(-2px);
+      box-shadow: 0 5px 15px rgba(25, 135, 84, 0.4);
+      background: linear-gradient(135deg, var(--dark-green) 0%, var(--success-green) 100%);
+    }
+    
+    .income-list {
+      padding: 2rem;
+    }
+    
+    .income-item {
+      background: white;
+      border-radius: 12px;
+      padding: 1rem;
+      margin-bottom: 1rem;
+      border-left: 4px solid var(--primary-green);
+      box-shadow: 0 2px 10px rgba(0,0,0,0.05);
+      transition: all 0.3s ease;
+    }
+    
+    .income-item:hover {
+      box-shadow: 0 5px 20px rgba(0,0,0,0.1);
+      transform: translateX(5px);
+    }
+    
+    .income-date {
+      font-size: 0.85rem;
+      color: #6c757d;
+      margin-bottom: 0.5rem;
+    }
+    
+    .income-details {
+      font-weight: 500;
+      color: var(--dark-gray);
+      letter-spacing: -0.2px;
+    }
+    
+    .income-amount {
+      font-size: 1.2rem;
+      font-weight: 600;
+      color: var(--primary-green);
+      letter-spacing: -0.3px;
+    }
+    
+    .income-category {
+      background: var(--light-green);
+      color: var(--success-green);
+      padding: 0.2rem 0.8rem;
+      border-radius: 20px;
+      font-size: 0.8rem;
+      font-weight: 500;
+      display: inline-block;
+      margin-top: 0.5rem;
+      letter-spacing: 0.2px;
+    }
+    
+    .section-title {
+      color: var(--dark-gray);
+      font-weight: 600;
+      margin-bottom: 1.5rem;
+      position: relative;
+      padding-bottom: 0.5rem;
+      font-size: 1.3rem;
+      letter-spacing: -0.3px;
+    }
+    
+    .section-title::after {
+      content: '';
+      position: absolute;
+      bottom: 0;
+      left: 0;
+      width: 50px;
+      height: 3px;
+      background: linear-gradient(135deg, var(--primary-green) 0%, var(--dark-green) 100%);
+      border-radius: 2px;
+    }
+    
+    .fade-in {
+      animation: fadeIn 0.5s ease-in;
+    }
+    
+    @keyframes fadeIn {
+      from { opacity: 0; transform: translateY(20px); }
+      to { opacity: 1; transform: translateY(0); }
+    }
+    
+    .empty-state {
+      text-align: center;
+      padding: 3rem;
+      color: #6c757d;
+    }
+    
+    .empty-state i {
+      font-size: 4rem;
+      margin-bottom: 1rem;
+      color: var(--primary-green);
+    }
+    
+    .summary-card {
+      background: white;
+      border-radius: 15px;
+      padding: 1.5rem;
+      text-align: center;
+      box-shadow: 0 5px 15px rgba(0,0,0,0.1);
+      border-left: 4px solid var(--primary-green);
+      transition: transform 0.3s ease, box-shadow 0.3s ease;
+      margin: 1rem 0;
+    }
+    
+    .summary-card:hover {
+      transform: translateY(-5px);
+      box-shadow: 0 8px 25px rgba(0,0,0,0.15);
+    }
+    
+    .summary-icon {
+      font-size: 2rem;
+      margin-bottom: 0.5rem;
+    }
+    
+    .summary-amount {
+      font-size: 1.8rem;
+      font-weight: 600;
+      margin: 0;
+      letter-spacing: -0.5px;
+    }
+    
+    .summary-label {
+      font-size: 0.9rem;
+      color: #6c757d;
+      margin: 0;
+      font-weight: 300;
+      letter-spacing: 0.3px;
+    }
+    
+    @media (max-width: 768px) {
+      .main-container {
+        margin: 10px;
+        border-radius: 15px;
+      }
+      
+      .header-section {
+        padding: 1rem 0;
+      }
+      
+      .logo-section {
+        flex-direction: column;
+        gap: 0.5rem;
+      }
+      
+      .logo-text h1 {
+        font-size: 1.5rem;
+      }
+      
+      .form-section, .income-list {
+        padding: 1.5rem;
+      }
+    }
+  </style>
+</head>
+<body>
+  <div class="container-fluid">
+    <div class="main-container">
+      
+      <div class="header-section">
+        <div class="logo-section">
+          <div class="logo-icon">
+            <img src="icon-192.png" alt="โลโก้เต็มปากเต็มคำ">
+          </div>
+          <div class="logo-text">
+            <h1></h1>
+          </div>
+        </div>
+      </div>
+      
+      <div class="navigation">
+        <div class="container">
+          <div class="d-flex justify-content-center flex-wrap">
+            <a href="index.html" class="nav-link active">รายรับ</a>
+            <a href="expense.html" class="nav-link">รายจ่าย</a>
+            <a href="report.html" class="nav-link">สรุปรายงาน</a>
+          </div>
+        </div>
+      </div>
+      
+      <div class="container-fluid">
+        <div class="row px-3">
+          <div class="col-12">
+            <div class="summary-card">
+              <div class="summary-icon text-success">
+                <i class="bi bi-arrow-up-circle-fill"></i>
+              </div>
+              <p class="summary-amount text-success" id="totalIncome">0</p>
+              <p class="summary-label">รายรับทั้งหมด (บาท)</p>
+            </div>
+          </div>
+        </div>
+      </div>
+      
+      <div class="form-section">
+        <h3 class="section-title">
+          <i class="bi bi-plus-circle me-2"></i>
+          เพิ่มรายรับ
+        </h3>
+        
+        <form class="row g-3">
+          <div class="col-md-6">
+            <label for="category" class="form-label" style="font-weight: 500;">หมวดหมู่</label>
+            <select class="form-select" id="category">
+              <option>ขายผลิตภัณฑ์</option>
+              <option>บริการ</option>
+              <option>อื่นๆ</option>
+            </select>
+          </div>
+          
+          <div class="col-md-6">
+            <label for="date" class="form-label" style="font-weight: 500;">วันที่</label>
+            <input type="date" class="form-control" id="date">
+          </div>
+          
+          <div class="col-md-8">
+            <label for="desc" class="form-label" style="font-weight: 500;">รายละเอียด</label>
+            <input type="text" class="form-control" id="desc" placeholder="ระบุรายละเอียด...">
+          </div>
+          
+          <div class="col-md-4">
+            <label for="amount" class="form-label" style="font-weight: 500;">จำนวนเงิน (บาท)</label>
+            <input type="number" class="form-control" id="amount" placeholder="0.00" step="0.01">
+          </div>
+          
+          <div class="col-12">
+            <button type="button" class="btn btn-primary w-100" onclick="addIncome()">
+              <i class="bi bi-save me-2"></i>
+              บันทึกรายรับ
+            </button>
+          </div>
+        </form>
+      </div>
+      
+      <div class="income-list">
+        <h3 class="section-title">
+          <i class="bi bi-cash-coin me-2"></i>
+          รายการรายรับ
+        </h3>
+        <div id="incomeList"></div>
+      </div>
+      
+    </div>
+  </div>
+
+  <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/js/bootstrap.bundle.min.js"></script>
+  
+  <script>
+    let incomeData = JSON.parse(localStorage.getItem("incomeData") || "[]");
+    
+    // Set today's date as default
+    document.getElementById('date').valueAsDate = new Date();
+
+    // Register Service Worker
+    if ('serviceWorker' in navigator) {
+        window.addEventListener('load', () => {
+            navigator.serviceWorker.register('/sw.js').then(registration => {
+                console.log('Service Worker registered with scope:', registration.scope);
+            }).catch(error => {
+                console.error('Service Worker registration failed:', error);
+            });
+        });
+    }
+    
+    function saveData() {
+      localStorage.setItem("incomeData", JSON.stringify(incomeData));
+      renderIncomeList();
+      updateTotalIncome();
+    }
+    
+    function addIncome() {
+      const desc = document.getElementById('desc').value.trim();
+      const amount = parseFloat(document.getElementById('amount').value);
+      const category = document.getElementById('category').value;
+      const date = document.getElementById('date').value || new Date().toISOString().split("T")[0];
+      
+      if (!desc || isNaN(amount) || amount <= 0) {
+        alert("กรุณากรอกข้อมูลให้ครบถ้วนและจำนวนเงินต้องมากกว่า 0");
+        return;
+      }
+      
+      const income = {
+        id: Date.now(), // ใช้ timestamp เป็น ID เพื่อความ unique
+        desc,
+        amount,
+        category,
+        date,
+        timestamp: new Date().toISOString() // สำหรับเรียงลำดับรายการใหม่ไปเก่า
+      };
+      
+      incomeData.push(income);
+      clearForm();
+      saveData();
+      showToast('บันทึกรายรับเรียบร้อย');
+    }
+    
+    function clearForm() {
+      document.getElementById('desc').value = "";
+      document.getElementById('amount').value = "";
+      document.getElementById('date').valueAsDate = new Date();
+      document.getElementById('category').value = "ขายผลิตภัณฑ์";
+    }
+    
+    function renderIncomeList() {
+      const incomeListEl = document.getElementById('incomeList');
+      incomeListEl.innerHTML = "";
+      
+      if (incomeData.length === 0) {
+        incomeListEl.innerHTML = `
+          <div class="empty-state">
+            <i class="bi bi-inbox"></i>
+            <h5>ยังไม่มีรายรับ</h5>
+            <p>เริ่มต้นด้วยการเพิ่มรายรับแรกของคุณ</p>
+          </div>
+        `;
+        return;
+      }
+      
+      // เรียงลำดับข้อมูลตาม timestamp จากใหม่ไปเก่าก่อนแสดงผล
+      const sortedIncomeData = incomeData.slice().sort((a, b) => new Date(b.timestamp) - new Date(a.timestamp));
+
+      sortedIncomeData.forEach((income, index) => {
+        const incomeItem = document.createElement("div");
+        incomeItem.className = "income-item fade-in";
+        incomeItem.innerHTML = `
+          <div class="d-flex justify-content-between align-items-start">
+            <div class="flex-grow-1">
+              <div class="income-date">
+                <i class="bi bi-calendar3 me-1"></i>
+                ${new Date(income.date).toLocaleDateString('th-TH')}
+              </div>
+              <div class="income-details">${income.desc}</div>
+              <div class="income-category">${income.category}</div>
+            </div>
+            <div class="text-end">
+              <div class="income-amount">
+                +${income.amount.toLocaleString('th-TH')} ฿
+              </div>
+              <div class="mt-2">
+                <button class="btn btn-outline-success btn-sm me-1" onclick="editIncome('${income.id}')">
+                  <i class="bi bi-pencil"></i>
+                </button>
+                <button class="btn btn-outline-danger btn-sm" onclick="deleteIncome('${income.id}')">
+                  <i class="bi bi-trash"></i>
+                </button>
+              </div>
+            </div>
+          </div>
+        `;
+        incomeListEl.appendChild(incomeItem);
+      });
+    }
+    
+    function editIncome(id) {
+      const index = incomeData.findIndex(income => income.id == id);
+      if (index > -1) {
+        const income = incomeData[index];
+        document.getElementById('desc').value = income.desc;
+        document.getElementById('amount').value = income.amount;
+        document.getElementById('category').value = income.category;
+        document.getElementById('date').value = income.date;
+        
+        // ลบรายการเดิมออกเมื่อเริ่มแก้ไข
+        incomeData.splice(index, 1);
+        saveData(); // บันทึกข้อมูลที่ไม่มีรายการที่กำลังแก้ไข
+        document.querySelector('.form-section').scrollIntoView({ behavior: 'smooth' });
+      }
+    }
+    
+    function deleteIncome(id) {
+      if (confirm("คุณต้องการลบรายรับนี้หรือไม่?")) {
+        incomeData = incomeData.filter(income => income.id != id);
+        saveData();
+        showToast('ลบรายรับเรียบร้อย');
+      }
+    }
+    
+    function updateTotalIncome() {
+      const total = incomeData.reduce((sum, income) => sum + income.amount, 0);
+      document.getElementById('totalIncome').innerText = total.toLocaleString('th-TH');
+    }
+    
+    function showToast(message) {
+      const toastContainer = document.createElement('div');
+      toastContainer.className = 'toast-container position-fixed bottom-0 end-0 p-3';
+      toastContainer.style.zIndex = '9999';
+      document.body.appendChild(toastContainer);
+
+      const toastLiveExample = document.createElement('div');
+      toastLiveExample.className = 'toast align-items-center text-white bg-success border-0';
+      toastLiveExample.setAttribute('role', 'alert');
+      toastLiveExample.setAttribute('aria-live', 'assertive');
+      toastLiveExample.setAttribute('aria-atomic', 'true');
+      toastLiveExample.innerHTML = `
+        <div class="d-flex">
+          <div class="toast-body">
+            <i class="bi bi-check-circle-fill me-2"></i>
+            ${message}
+          </div>
+          <button type="button" class="btn-close btn-close-white me-2 m-auto" data-bs-dismiss="toast" aria-label="Close"></button>
+        </div>
+      `;
+      toastContainer.appendChild(toastLiveExample);
+
+      const toastBootstrap = bootstrap.Toast.getOrCreateInstance(toastLiveExample);
+      toastBootstrap.show();
+
+      // ลบ Toast Container หลังจาก Toast หายไป
+      toastLiveExample.addEventListener('hidden.bs.toast', () => {
+        toastContainer.remove();
+      });
+    }
+
+    // Initialize on page load
+    document.addEventListener('DOMContentLoaded', () => {
+      renderIncomeList();
+      updateTotalIncome();
+    });
+  </script>
+</body>
+</html>
